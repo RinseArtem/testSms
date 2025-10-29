@@ -1,5 +1,9 @@
 {
   "devDependencies": {
     "@types/node": "^24.9.1"
+  },
+  "dependencies": {
+    "uuid": "^13.0.0",
+    "vue-imask": "^7.6.1"
   }
 }

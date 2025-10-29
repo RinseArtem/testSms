@@ -2,18 +2,20 @@
 
 namespace app\controllers;
 
+use app\services\SmsService;
 use Yii;
-use yii\filters\AccessControl;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\VerbFilter;
-use app\models\LoginForm;
-use app\models\ContactForm;
+
 
 class SiteController extends Controller
 {
+    /**
+     * @throws InvalidConfigException
+     */
     function actionIndex(): string
     {
-        return $this->renderContent('wewe');
+        $smsService = Yii::createObject(SmsService::class);
+        return $this->renderContent('Hello');
     }
 }

@@ -1,5 +1,9 @@
 <?php
 
+use app\interfaces\SmsProviderInterface;
+use app\providers\MySmsProvider;
+use app\services\SmsService;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -11,10 +15,14 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'timeZone' => 'Europe/Moscow',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'Qc9H9e5B5G8JIi3bqOeGEh3sagBzBPt9',
+            'parsers' => [
+                'application/json' => \yii\web\JsonParser::class,
+            ],
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -46,7 +54,32 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                [
+                    'class' => 'yii\rest\UrlRule',
+                    'controller' => ['api/sms'],
+                    'pluralize' => false,
+                    'extraPatterns' => [
+                        'POST send' => 'send',
+                        'POST get-sending-delay' => 'get-sending-delay',
+                        'POST verify-code' => 'verify-code',
+                    ],
+                ],
             ],
+        ],
+    ],
+    'container' => [
+        'definitions' => [
+            SmsProviderInterface::class => [
+                'class' => MySmsProvider::class,
+            ],
+
+
+            //SmsService::class => SmsService::class,
+        ],
+    ],
+    'modules' => [
+        'api' => [
+            'class' => 'app\modules\api\Module',
         ],
     ],
     'params' => $params,

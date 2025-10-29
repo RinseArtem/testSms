@@ -1,8 +1,12 @@
 <?php
-class SmsCode extends \yii\db\ActiveRecord
+namespace app\models;
+
+use yii\db\ActiveRecord;
+
+class SmsCode extends ActiveRecord
 {
     public static function tableName(): string
     {
-        return 'sms_code';
+        return 'sms_codes';
     }
 }
